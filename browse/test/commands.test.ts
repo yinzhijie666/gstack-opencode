@@ -632,8 +632,8 @@ describe('Status', () => {
 describe('CLI server script resolution', () => {
   test('prefers adjacent browse/src/server.ts for compiled project installs', () => {
     const root = fs.mkdtempSync('/tmp/gstack-cli-');
-    const execPath = path.join(root, '.claude/skills/gstack/browse/dist/browse');
-    const serverPath = path.join(root, '.claude/skills/gstack/browse/src/server.ts');
+    const execPath = path.join(root, 'browse', 'dist', 'browse');
+    const serverPath = path.join(root, 'browse', 'src', 'server.ts');
 
     fs.mkdirSync(path.dirname(execPath), { recursive: true });
     fs.mkdirSync(path.dirname(serverPath), { recursive: true });
@@ -647,7 +647,9 @@ describe('CLI server script resolution', () => {
 
     expect(resolved).toBe(serverPath);
 
-    fs.rmSync(root, { recursive: true, force: true });
+    if (fs.existsSync(root)) {
+      fs.rmdirSync(root, { recursive: true });
+    }
   });
 });
 

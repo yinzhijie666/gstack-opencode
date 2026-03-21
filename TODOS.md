@@ -452,13 +452,13 @@ Shipped as v0.5.0 on main. Includes `/plan-design-review` (report-only design au
 **Priority:** P1
 **Depends on:** /document-release shipped
 
-### `{{DOC_VOICE}}` shared resolver
+### Shared documentation voice guide
 
-**What:** Create a placeholder resolver in gen-skill-docs.ts encoding the gstack voice guide (friendly, user-forward, lead with benefits). Inject into /ship Step 5, /document-release Step 5, and reference from CLAUDE.md.
+**What:** Create one shared OpenCode-first documentation voice guide (friendly, user-forward, lead with benefits) and reuse it across `/ship`, `/document-release`, and the active repo docs.
 
-**Why:** DRY — voice rules currently live inline in 3 places (CLAUDE.md CHANGELOG style section, /ship Step 5, /document-release Step 5). When the voice evolves, all three drift.
+**Why:** DRY — voice rules currently live inline in multiple places. When the voice evolves, the docs drift.
 
-**Context:** Same pattern as `{{QA_METHODOLOGY}}` — shared block injected into multiple templates to prevent drift. ~20 lines in gen-skill-docs.ts.
+**Context:** Should live as a shared local artifact, not a host-specific template resolver.
 
 **Effort:** S
 **Priority:** P2
@@ -470,13 +470,13 @@ Shipped as v0.5.0 on main. Includes `/plan-design-review` (report-only design au
 
 ~~**What:** Auto-detect which of the 4 reviews are relevant based on branch changes (skip Design Review if no CSS/view changes, skip Code Review if plan-only).~~
 
-`bin/gstack-diff-scope` shipped — categorizes diff into SCOPE_FRONTEND, SCOPE_BACKEND, SCOPE_PROMPTS, SCOPE_TESTS, SCOPE_DOCS, SCOPE_CONFIG. Used by design-review-lite to skip when no frontend files changed. Dashboard integration for conditional row display is a follow-up.
+Legacy diff-scope helper shipped previously and categorized diffs into SCOPE_FRONTEND, SCOPE_BACKEND, SCOPE_PROMPTS, SCOPE_TESTS, SCOPE_DOCS, SCOPE_CONFIG. An OpenCode-native replacement is still needed if the dashboard will keep conditional row display.
 
 **Remaining:** Dashboard conditional row display (hide "Design Review: NOT YET RUN" when SCOPE_FRONTEND=false). Extend to Eng Review (skip for docs-only) and CEO Review (skip for config-only).
 
 **Effort:** S
 **Priority:** P3
-**Depends on:** gstack-diff-scope (shipped)
+**Depends on:** OpenCode-native diff scope helper
 
 ### /merge skill — review-gated PR merge
 
@@ -494,7 +494,7 @@ Shipped as v0.5.0 on main. Includes `/plan-design-review` (report-only design au
 
 ### Completeness metrics dashboard
 
-**What:** Track how often Claude chooses the complete option vs shortcut across gstack sessions. Aggregate into a dashboard showing completeness trend over time.
+**What:** Track how often OpenCode workflows choose the complete option vs shortcut across gstack sessions. Aggregate into a dashboard showing completeness trend over time.
 
 **Why:** Without measurement, we can't know if the Completeness Principle is working. Could surface patterns (e.g., certain skills still bias toward shortcuts).
 
@@ -506,18 +506,18 @@ Shipped as v0.5.0 on main. Includes `/plan-design-review` (report-only design au
 
 ## Safety & Observability
 
-### On-demand hook skills (/careful, /freeze, /guard)
+### On-demand guardrail commands (/careful, /freeze, /guard)
 
-**What:** Three new skills that use Claude Code's session-scoped PreToolUse hooks to add safety guardrails on demand.
+**What:** Three new OpenCode-native commands or skills that add optional safety guardrails on demand.
 
-**Why:** Anthropic's internal skill best practices recommend on-demand hooks for safety. Claude Code already handles destructive command permissions, but these add an explicit opt-in layer for high-risk sessions (touching prod, debugging live systems).
+**Why:** The repo still wants explicit opt-in guardrails for high-risk sessions (touching prod, debugging live systems), but they should be designed for the active OpenCode surface rather than host-specific hooks.
 
 **Skills:**
 - `/careful` — PreToolUse hook on Bash tool. Warns (not blocks) before destructive commands: `rm -rf`, `DROP TABLE`, `git push --force`, `git reset --hard`, `kubectl delete`, `docker system prune`. Uses `permissionDecision: "ask"` so user can override.
 - `/freeze` — PreToolUse hook on Edit/Write tools. Restricts file edits to a user-specified directory. Great for debugging without accidentally "fixing" unrelated code.
 - `/guard` — meta-skill composing `/careful` + `/freeze` into one command.
 
-**Implementation notes:** Use `${CLAUDE_SKILL_DIR}` (not `${SKILL_DIR}`) for script paths in hook commands. Pure bash JSON parsing (no jq dependency). Freeze dir storage: `${CLAUDE_PLUGIN_DATA}/freeze-dir.txt` with `~/.gstack/freeze-dir.txt` fallback. Ensure trailing `/` on freeze dir paths to prevent `/src` matching `/src-old`.
+**Implementation notes:** Store guardrail state in OpenCode-local data paths or `.gstack/`. Ensure freeze dir paths use trailing `/` so `/src` does not match `/src-old`.
 
 **Effort:** M (human) / S (CC)
 **Priority:** P3
@@ -527,9 +527,9 @@ Shipped as v0.5.0 on main. Includes `/plan-design-review` (report-only design au
 
 **What:** Track which skills get invoked, how often, from which repo.
 
-**Why:** Enables finding undertriggering skills and measuring adoption. Anthropic uses a PreToolUse hook for this; simpler approach is appending JSONL from the preamble.
+**Why:** Enables finding undertriggering skills and measuring adoption. A simple local JSONL append is enough for the current OpenCode surface.
 
-**Context:** Add to `generatePreamble()` in `scripts/gen-skill-docs.ts`. Append to `~/.gstack/analytics/skill-usage.jsonl` with skill name, timestamp, and repo name. `mkdir -p` ensures the directory exists.
+**Context:** Implement this in the active OpenCode command/skill runtime path. Append to `~/.gstack/analytics/skill-usage.jsonl` with skill name, timestamp, and repo name. `mkdir -p` ensures the directory exists.
 
 **Effort:** S (human) / S (CC)
 **Priority:** P3

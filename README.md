@@ -1,200 +1,268 @@
-# gstack
+[简体中文](README-zh-CN.md)
 
-Hi, I'm [Garry Tan](https://x.com/garrytan). I'm President & CEO of [Y Combinator](https://www.ycombinator.com/), where I've worked with thousands of startups including Coinbase, Instacart, and Rippling when the founders were just one or two people in a garage — companies now worth tens of billions of dollars. Before YC, I designed the Palantir logo and was one of the first eng manager/PM/designers there. I cofounded Posterous, a blog platform we sold to Twitter. I built Bookface, YC's internal social network, back in 2013. I've been building products as a designer, PM, and eng manager for a long time.
+# gstack for OpenCode
 
-And right now I am in the middle of something that feels like a new era entirely.
+OpenCode-native workflow stack inspired by gstack, adapted for teams and developers who want advanced AI workflows without depending on Claude Code.
 
-In the last 60 days I have written **over 600,000 lines of production code** — 35% tests — and I am doing **10,000 to 20,000 usable lines of code per day** as a part-time part of my day while doing all my duties as CEO of YC. That is not a typo. My last `/retro` (developer stats from the last 7 days) across 3 projects: **140,751 lines added, 362 commits, ~115k net LOC**. The models are getting dramatically better every week. We are at the dawn of something real — one person shipping at a scale that used to require a team of twenty.
+Quick links: [Quick Start](#quick-start) · [Validation Status](#validation-status) · [Open Source Notes](#open-source-notes) · [Release Checklist](docs/open-source-release-checklist.md) · [Docs Index](docs/README.md)
 
-**2026 — 1,237 contributions and counting:**
+This repository is an OpenCode-native adaptation of the original gstack project: `https://github.com/garrytan/gstack`.
 
-![GitHub contributions 2026 — 1,237 contributions, massive acceleration in Jan-Mar](docs/images/github-2026.png)
+It exists for developers who want the workflow ideas and AI skills from gstack but cannot use Claude Code in their environment. The goal is to keep the shipped workflow surface practical, local-first, and runnable in OpenCode while continuing to evolve the project in public.
 
-**2013 — when I built Bookface at YC (772 contributions):**
+The active OpenCode adaptation in this repository is maintained with OpenCode and `GPT-5.4` (model id `openai/gpt-5.4`). The original upstream project remains the source of the product idea and workflow naming; this repository carries the OpenCode-focused runtime, docs, and validation work.
 
-![GitHub contributions 2013 — 772 contributions building Bookface at YC](docs/images/github-2013.png)
+This document is the OpenCode version of the README. It reflects what is actually shipped in this repository today under `.opencode/`, not the older pre-OpenCode surface.
 
-Same person. Different era. The difference is the tooling.
+## Current Status
 
-**gstack is how I do it.** It is my open source software factory. It turns Claude Code into a virtual engineering team you actually manage — a CEO who rethinks the product, an eng manager who locks the architecture, a designer who catches AI slop, a paranoid reviewer who finds production bugs, a QA lead who opens a real browser and clicks through your app, and a release engineer who ships the PR. Fifteen specialists, all as slash commands, all Markdown, **all free, MIT license, available right now.**
+This repo is now maintained as an OpenCode-first workflow stack.
 
-I am learning how to get to the edge of what agentic systems can do as of March 2026, and this is my live experiment. I am sharing it because I want the whole world on this journey with me.
+- It is based on `garrytan/gstack`, but intentionally reshaped for OpenCode users who cannot rely on Claude Code.
+- OpenCode already has native commands and skills for the core planning, review, QA, design-audit, debugging, release-prep, and docs-update flows.
+- Several OpenCode workflows are intentionally bounded v1 slices: they write reports and durable artifacts first, then leave deeper automation loops to later OpenCode phases.
 
-Fork it. Improve it. Make it yours. Don't player hate, appreciate.
+If you want the short version: the OpenCode surface is real, usable, and backed by local validation plus smoke coverage in this repo for the workflows listed below, but some workflows are still intentionally report-first or report-only.
 
-**Who this is for:**
-- **Founders and CEOs** — especially technical ones who still want to ship. This is how you build like a team of twenty.
-- **First-time Claude Code users** — gstack is the best way to start. Structured roles instead of a blank prompt.
-- **Tech leads and staff engineers** — bring rigorous review, QA, and release automation to every PR
+This repository is open source and will keep evolving. The focus is not on cloning every historical host behavior, but on steadily improving the OpenCode-native path.
 
-## Quick start: your first 10 minutes
+## What Ships Today
 
-1. Install gstack (30 seconds — see below)
-2. Run `/plan-ceo-review` on any feature idea
-3. Run `/review` on any branch with changes
-4. Run `/qa` on your staging URL
-5. Stop there. You'll know if this is for you.
+OpenCode-native commands currently present in this repo:
 
-Expect first useful run in under 5 minutes on any repo with tests already set up.
+- `/browse`
+- `/plan-ceo-review`
+- `/plan-eng-review`
+- `/plan-design-review`
+- `/design-consultation`
+- `/review`
+- `/qa`
+- `/qa-only`
+- `/design-review`
+- `/ship`
+- `/debug`
+- `/document-release`
 
-**If you only read one more section, read this one.**
+Not yet ported as native OpenCode commands in this repo:
 
-## Install — takes 30 seconds
+- `/office-hours`
+- `/retro`
+- `/setup-browser-cookies`
 
-**Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Git](https://git-scm.com/), [Bun](https://bun.sh/) v1.0+
+## Upstream And Scope
 
-### Step 1: Install on your machine
+- Upstream reference: `https://github.com/garrytan/gstack`
+- This repo keeps the same workflow vocabulary where practical, then re-implements the active surface for OpenCode
+- The promise here is not "every historical gstack feature is already ported"
+- The promise is: every workflow listed as shipped in this README has an active OpenCode command/skill contract, plus local validation coverage in this repository
 
-Open Claude Code and paste this. Claude does the rest.
+## Quick Start
 
-> Install gstack: run **`git clone https://github.com/garrytan/gstack.git ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup`** then add a "gstack" section to CLAUDE.md that says to use the /browse skill from gstack for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /debug, /document-release. Then ask the user if they also want to add gstack to the current project so teammates get it.
+Requirements:
 
-### Step 2: Add to your repo so teammates get it (optional)
+- OpenCode
+- Bun v1.0+
+- Git
+- Playwright Chromium available locally for browser-backed flows
 
-> Add gstack to this project: run **`cp -Rf ~/.claude/skills/gstack .claude/skills/gstack && rm -rf .claude/skills/gstack/.git && cd .claude/skills/gstack && ./setup`** then add a "gstack" section to this project's CLAUDE.md that says to use the /browse skill from gstack for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /debug, /document-release, and tells Claude that if gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to build the binary and register skills.
+Recommended one-shot setup from the repo root:
 
-Real files get committed to your repo (not a submodule), so `git clone` just works. Everything lives inside `.claude/`. Nothing touches your PATH or runs in the background.
-
-## See it work
-
+```bash
+./setup
 ```
-You:    I want to add photo upload for sellers.
-You:    /plan-ceo-review
-Claude: "Photo upload" is not the feature. The real job is helping
-        sellers create listings that actually sell. What if we
-        auto-identify the product, pull specs and comps from the
-        web, and draft the listing automatically? That's 10 stars.
-        "Upload a photo" is 3 stars. Which are we building?
-        [8 expansion proposals, you cherry-pick 5, defer 3 to backlog]
 
-You:    /plan-design-review
-Claude: Design Score: B  |  AI Slop Score: C
-        "Upload flow looks like a default Bootstrap form."
-        [80-item audit, infers your design system, exports DESIGN.md]
-        [flags 3 AI slop patterns: gradient hero, icon grid, uniform radius]
+That installs local dependencies, builds the `browse` binary, installs Playwright Chromium when needed, and prepares the repo for OpenCode use.
+
+Manual setup remains available if you prefer individual steps.
+
+From the repo root:
+
+```bash
+bun install
+bun run build
+```
+
+That builds the local `browse` binary used by the browser-backed OpenCode workflows.
+
+Then open the repo in OpenCode and start with:
+
+1. `/plan-ceo-review` on any feature brief or `PLAN.md`
+2. `/review` on a branch with local changes
+3. `/qa http://localhost:3000` or another explicit local/staging URL
+4. `/ship` when you want a local release-readiness report
+
+Source of truth for current OpenCode behavior lives in `.opencode/commands/` and `.opencode/skills/`. `README.claude.backup.md` is retained only as a historical archive.
+
+## Model And Runtime
+
+- The active adaptation work in this repository is maintained with OpenCode + `GPT-5.4`
+- Browser-backed workflows rely on the local `browse` runtime plus Playwright Chromium
+- Behavior may vary with different OpenCode models or providers, so the docs and tests in this repo are written against the current `GPT-5.4` path
+
+## What To Expect From OpenCode Today
+
+### Planning
+
+- `/plan-ceo-review` writes a bounded strategy report under `.gstack/plan-reports/`
+- `/plan-eng-review` writes a technical plan with architecture summary, data flow, risks, and test matrix
+- `/plan-design-review` writes a design-focused planning report with IA, interaction coverage, AI slop risk, and responsive/accessibility gaps
+
+These are report-first slices. They are good for pressure-testing a plan before implementation.
+
+### Review
+
+- `/review` is a structural pre-landing review
+- It reads the branch diff against a local base branch
+- It focuses on high-signal categories such as SQL/data safety, race conditions, trust boundaries, and enum/value completeness
+- It writes a local report under `.gstack/review-reports/`
+
+Important: the OpenCode `/review` slice does not auto-fix code in this v1 version.
+
+### QA
+
+- `/qa` runs browser-first QA and writes a report plus baseline under `.gstack/qa-reports/`
+- `/qa-only` uses the same browser methodology but is explicitly report-only
+- Both use the local `browse` binary and preserve screenshot evidence
+
+Important: in this first OpenCode slice, `/qa` is also report-only. It does not yet do the Claude-era test-fix-verify loop or regression-test generation, and it requires an explicit target URL or local page path.
+
+### Design
+
+- `/design-consultation` writes a bounded design direction report
+- `/design-review` audits one explicit local rendered page with browser evidence and writes a design report under `.gstack/design-reports/`
+
+Important: the OpenCode `/design-review` slice is report-first in this repo today. It stays on one explicit local page and does not patch UI code automatically.
+
+### Debugging
+
+- `/debug` requires an explicit local reproduction command
+- It investigates root cause first and writes a durable report under `.gstack/debug-reports/`
+
+### Release Prep
+
+- `/ship` checks local branch state, test status, and review readiness
+- It writes a release-prep report under `.gstack/ship-reports/`
+
+Important: the OpenCode `/ship` slice is local-only in this repo today. It runs an explicit or obvious repo-local test command when one exists, otherwise reports `NEEDS_TEST_COMMAND`. It does not commit, push, or open a PR.
+
+### Docs Sync
+
+- `/document-release` updates a narrow, factual set of docs from local repository changes
+- It writes a summary artifact under `.gstack/document-release/`
+
+In this v1 slice, `README.md`, `README-zh-CN.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, and `docs/**/*.md` are in scope. `CHANGELOG.md`, `VERSION`, `TODOS.md`, and `README.claude.backup.md` are explicitly out of scope.
+
+## A Realistic OpenCode Flow
+
+```text
+You:    /plan-ceo-review
+OpenCode: writes a strategy report to .gstack/plan-reports/
 
 You:    /plan-eng-review
-Claude: ┌─────────┐    ┌──────────┐    ┌──────────┐    ┌─────────┐
-        │ Upload  │───▶│ Classify │───▶│ Enrich   │───▶│ Draft   │
-        │ (sync)  │    │ (async)  │    │ (async)  │    │ (async) │
-        └─────────┘    └──────────┘    └──────────┘    └─────────┘
-        [ASCII diagrams for every data flow, state machine, error path]
-        [14-case test matrix, 6 failure modes mapped, 3 security concerns]
-
-You:    Approve plan. Exit plan mode.
-        [Claude writes 2,400 lines across 11 files — models, services,
-         controllers, views, migrations, and tests. ~8 minutes.]
+OpenCode: writes a technical report with data flow, risks, and tests
 
 You:    /review
-Claude: [AUTO-FIXED] Orphan S3 cleanup on failed upload
-        [AUTO-FIXED] Missing index on listings.status
-        [ASK] Race condition on hero image selection → You: yes
-        [traces every new enum value through all switch statements]
-        3 issues — 2 auto-fixed, 1 fixed.
+OpenCode: writes a structural review report against the current branch
 
-You:    /qa https://staging.myapp.com
-Claude: [opens real browser, logs in, uploads photos, clicks through flows]
-        Upload → classify → enrich → draft: end to end ✓
-        Mobile: ✓  |  Slow connection: ✓  |  Bad image: ✓
-        [finds bug: preview doesn't clear on second upload — fixes it]
-        Regression test generated.
+You:    /qa http://localhost:3000 --quick
+OpenCode: opens the local page, captures screenshots and console evidence,
+          then writes a QA report and baseline to .gstack/qa-reports/
 
 You:    /ship
-Claude: Tests: 42 → 51 (+9 new)
-        Coverage: 14/14 code paths (100%)
-        PR: github.com/you/app/pull/42
+OpenCode: writes a local release-readiness report based on branch state,
+          tests, and review artifacts
 ```
 
-One feature. Seven commands. The agent reframed the product, ran an 80-item design audit, drew the architecture, wrote 2,400 lines of code, found a race condition I would have missed, auto-fixed two issues, opened a real browser to QA test, found and fixed a bug I didn't know about, wrote 9 tests, and generated a regression test. That is not a copilot. That is a team.
+That is the current OpenCode promise: bounded, durable workflow artifacts with native OpenCode commands and local verification where applicable.
 
-## The team
+## Validation Status
 
-| Skill | Your specialist | What they do |
-|-------|----------------|--------------|
-| `/plan-ceo-review` | **CEO / Founder** | Rethink the problem. Find the 10-star product hiding inside the request. Four modes: Expansion, Selective Expansion, Hold Scope, Reduction. |
-| `/plan-eng-review` | **Eng Manager** | Lock in architecture, data flow, diagrams, edge cases, and tests. Forces hidden assumptions into the open. |
-| `/plan-design-review` | **Senior Designer** | Rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. AI Slop detection. Interactive — one AskUserQuestion per design choice. |
-| `/design-consultation` | **Design Partner** | Build a complete design system from scratch. Knows the landscape, proposes creative risks, generates realistic product mockups. Design at the heart of all other phases. |
-| `/review` | **Staff Engineer** | Find the bugs that pass CI but blow up in production. Auto-fixes the obvious ones. Flags completeness gaps. |
-| `/ship` | **Release Engineer** | Sync main, run tests, audit coverage, push, open PR. Bootstraps test frameworks if you don't have one. One command. |
-| `/browse` | **QA Engineer** | Give the agent eyes. Real Chromium browser, real clicks, real screenshots. ~100ms per command. |
-| `/qa` | **QA Lead** | Test your app, find bugs, fix them with atomic commits, re-verify. Auto-generates regression tests for every fix. |
-| `/qa-only` | **QA Reporter** | Same methodology as /qa but report only. Use when you want a pure bug report without code changes. |
-| `/design-review` | **Designer Who Codes** | Same audit as /plan-design-review, then fixes what it finds. Atomic commits, before/after screenshots. |
-| `/setup-browser-cookies` | **Session Manager** | Import cookies from your real browser (Chrome, Arc, Brave, Edge) into the headless session. Test authenticated pages. |
-| `/retro` | **Eng Manager** | Team-aware weekly retro. Per-person breakdowns, shipping streaks, test health trends, growth opportunities. |
-| `/office-hours` | **YC Office Hours** | Two modes. Startup: six forcing questions on demand, users, and product. Builder: brainstorming for side projects, hackathons, and learning. Writes a design doc with personal observations about how you think. |
-| `/debug` | **Debugger** | Systematic root-cause debugging. Iron Law: no fixes without investigation. Traces data flow, tests hypotheses, stops after 3 failed fixes. |
-| `/document-release` | **Technical Writer** | Update all project docs to match what you just shipped. Catches stale READMEs automatically. |
+The following OpenCode slices are backed by static asset checks and smoke coverage in this repo:
 
-**[Deep dives with examples and philosophy for every skill →](docs/skills.md)**
+- `/plan-ceo-review`
+- `/plan-eng-review`
+- `/plan-design-review`
+- `/review`
+- `/qa`
+- `/qa-only`
+- `/ship`
+- `/design-consultation`
+- `/design-review`
+- `/debug`
+- `/document-release`
 
-## What's new and why it matters
+This means the currently shipped OpenCode workflows are not just documented: they have runnable validation in this repository.
 
-**Design is at the heart.** `/design-consultation` doesn't just pick fonts. It researches what's out there in your space, proposes safe choices AND creative risks, generates realistic mockups of your actual product, and writes `DESIGN.md` — and then `/design-review` and `/plan-eng-review` read what you chose. Design decisions flow through the whole system.
+More specifically:
 
-**`/qa` was a massive unlock.** It let me go from 6 to 12 parallel workers. Claude Code saying *"I SEE THE ISSUE"* and then actually fixing it, generating a regression test, and verifying the fix — that changed how I work. The agent has eyes now.
+- `test/opencode-assets.test.ts` validates the shipped OpenCode command and skill contracts
+- `test/opencode-*.test.ts` provides workflow smoke coverage for the migrated command surface
+- `bun test` covers the default OpenCode validation path used by this repo, while smoke runs are enabled explicitly when needed
 
-**Smart review routing.** Just like at a well-run startup: CEO doesn't have to look at infra bug fixes, design review isn't needed for backend changes. gstack tracks what reviews are run, figures out what's appropriate, and just does the smart thing. The Review Readiness Dashboard tells you where you stand before you ship.
+If you want to verify the current OpenCode surface yourself:
 
-**Test everything.** `/ship` bootstraps test frameworks from scratch if your project doesn't have one. Every `/ship` run produces a coverage audit. Every `/qa` bug fix generates a regression test. 100% test coverage is the goal — tests make vibe coding safe instead of yolo coding.
+```bash
+bun test test/opencode-assets.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-plan-ceo-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-plan-eng-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-plan-design-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
+```
 
-**`/document-release` is the engineer you never had.** It reads every doc file in your project, cross-references the diff, and updates everything that drifted. README, ARCHITECTURE, CONTRIBUTING, CLAUDE.md, TODOS — all kept current automatically.
+Those are representative migrated workflow checks, not a claim that every historical upstream path is already ported.
 
-## 10 sessions at once
+The right public claim is: this repo keeps the migrated workflow surface aligned with the original project intent and includes runnable validation for the shipped OpenCode workflows in the current OpenCode environment. It should not be described as full feature parity with the original host environment.
 
-gstack is powerful with one session. It is transformative with ten.
+## Differences From The Claude Backup README
 
-[Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session running `/qa` on staging, another doing `/review` on a PR, a third implementing a feature, and seven more on other branches. All at the same time.
+`README.claude.backup.md` preserves the broader historical gstack story and the fuller Claude-oriented system description.
 
-One person, ten parallel agents, each with the right cognitive mode. That is a different way of building software.
+This README is intentionally narrower:
 
----
+- it only documents commands that actually exist under `.opencode/commands/`
+- it only claims behavior that is present in the current OpenCode skills
+- it treats report-first slices as a feature of the current migration stage, not as missing documentation
 
-## Come ride the wave
+If a workflow matters to you and it is not listed here, assume it is not part of the current OpenCode surface unless you can find a native OpenCode command for it in `.opencode/commands/`.
 
-This is **free, MIT licensed, open source, available now.** No premium tier. No waitlist. No strings.
+## Open Source Notes
 
-I open sourced how I do development and I am actively upgrading my own software factory here. You can fork it and make it your own. That's the whole point. I want everyone on this journey.
+- upstream idea and historical system: `garrytan/gstack`
+- active OpenCode adaptation here: OpenCode + `GPT-5.4`
+- license: MIT
+- model/runtime costs depend on your OpenCode setup; the repository code is open source, but hosted model usage is not implied to be free
 
-Same tools, different outcome — because gstack gives you structured roles and review gates, not generic agent chaos. That governance is the difference between shipping fast and shipping reckless.
+## Repository Layout For OpenCode
 
-The models are getting better fast. The people who figure out how to work with them now — really work with them, not just dabble — are going to have a massive advantage. This is that window. Let's go.
+Key OpenCode-native assets live here:
 
-Fifteen specialists. All slash commands. All Markdown. All free. **[github.com/garrytan/gstack](https://github.com/garrytan/gstack)** — MIT License
-
-> **We're hiring.** Want to ship 10K+ LOC/day and help harden gstack?
-> Come work at YC — [ycombinator.com/software](https://ycombinator.com/software)
-> Extremely competitive salary and equity. San Francisco, Dogpatch District.
-
-## Docs
-
-| Doc | What it covers |
-|-----|---------------|
-| [Skill Deep Dives](docs/skills.md) | Philosophy, examples, and workflow for every skill (includes Greptile integration) |
-| [Architecture](ARCHITECTURE.md) | Design decisions and system internals |
-| [Browser Reference](BROWSER.md) | Full command reference for `/browse` |
-| [Contributing](CONTRIBUTING.md) | Dev setup, testing, contributor mode, and dev mode |
-| [Changelog](CHANGELOG.md) | What's new in every version |
+- `.opencode/commands/` - slash entrypoints for OpenCode
+- `.opencode/skills/` - reusable workflow instructions and contracts
+- `browse/` - shared browser runtime and compiled local binary
+- `test/opencode-*-smoke.test.ts` - OpenCode smoke coverage
 
 ## Troubleshooting
 
-**Skill not showing up?** `cd ~/.claude/skills/gstack && ./setup`
+### `/browse` or browser-backed workflows fail
 
-**`/browse` fails?** `cd ~/.claude/skills/gstack && bun install && bun run build`
+Build the local binary and make sure Chromium is installed:
 
-**Stale install?** Run `/gstack-upgrade` — or set `auto_upgrade: true` in `~/.gstack/config.yaml`
-
-**Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a gstack section. Add this:
-
+```bash
+bun install
+bun run build
+npx playwright install chromium
 ```
-## gstack
-Use /browse from gstack for all web browsing. Never use mcp__claude-in-chrome__* tools.
-Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
-/design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review,
-/setup-browser-cookies, /retro, /debug, /document-release.
-```
+
+### A browser workflow says setup is missing
+
+Most browser-backed OpenCode slices expect `./browse/dist/browse` to exist in the repo.
+
+### A command writes a report instead of making edits
+
+That is often intentional in the current OpenCode migration phase. Check whether the slice is marked report-first or report-only in its skill contract under `.opencode/skills/`.
 
 ## License
 
-MIT. Free forever. Go build something.
+MIT. Open source. Build on it, fork it, and keep improving the OpenCode path.
