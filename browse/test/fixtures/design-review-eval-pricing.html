@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design Review Eval - Pricing</title>
+  <style>
+    :root {
+      --ink: #19324a;
+      --muted: #70839a;
+      --paper: #f6efe2;
+      --panel: #fffaf2;
+      --line: rgba(25, 50, 74, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #efe6d6 0%, var(--paper) 100%);
+    }
+
+    .shell {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.64);
+    }
+
+    .topbar a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 16px;
+      font-size: 14px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 52px;
+      letter-spacing: -0.05em;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .plan {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+    }
+
+    .plan:nth-child(2) {
+      transform: translateY(-10px);
+    }
+
+    .price {
+      margin: 14px 0;
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    ul {
+      padding-left: 18px;
+      line-height: 1.8;
+    }
+
+    .plan button {
+      width: 100%;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: 999px;
+      background: #d7cfaa;
+      color: #f7f3e6;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plan:nth-child(2) {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <strong>Northstar Cloud</strong>
+      <nav>
+        <a href="/design-review-eval.html">Home</a>
+        <a href="/design-review-eval-pricing.html">Pricing</a>
+      </nav>
+    </div>
+
+    <h1>Plans for teams of every size.</h1>
+    <p>Simple, transparent, and premium pricing for modern organizations.</p>
+
+    <section class="pricing-grid" aria-label="Pricing plans">
+      <article class="plan">
+        <h2>Starter</h2>
+        <div class="price">$19</div>
+        <p>For early-stage teams that need modern workflows.</p>
+        <ul>
+          <li>Unlimited collaboration</li>
+          <li>Real-time intelligence</li>
+          <li>Fast onboarding</li>
+        </ul>
+        <button>Get started</button>
+      </article>
+
+      <article class="plan">
+        <h2>Scale</h2>
+        <div class="price">$89</div>
+        <p>For fast-moving organizations unlocking next-gen growth.</p>
+        <ul>
+          <li>Advanced dashboards</li>
+          <li>Premium automations</li>
+          <li>White-glove support</li>
+        </ul>
+        <button>Unlock growth</button>
+      </article>
+
+      <article class="plan">
+        <h2>Enterprise</h2>
+        <div class="price">Custom</div>
+        <p>For visionaries building category-defining software experiences.</p>
+        <ul>
+          <li>Strategic services</li>
+          <li>Unlimited seats</li>
+          <li>Priority enablement</li>
+        </ul>
+        <button>Talk to sales</button>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

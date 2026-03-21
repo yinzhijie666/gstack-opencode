@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design Review Eval - Northstar Cloud</title>
+  <style>
+    :root {
+      --ink: #19324a;
+      --muted: #70839a;
+      --paper: #f6efe2;
+      --panel: #fdf9f1;
+      --accent: #d7cfaa;
+      --line: rgba(25, 50, 74, 0.12);
+      --shadow-soft: 0 18px 42px rgba(25, 50, 74, 0.08);
+      --shadow-hard: 0 9px 0 rgba(25, 50, 74, 0.18);
+      --radius-lg: 30px;
+      --radius-md: 18px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 32%),
+        linear-gradient(180deg, #efe6d6 0%, var(--paper) 62%, #efe3ce 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-shell {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 24px 0 64px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.56);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .topnav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 30px;
+      min-width: 940px;
+      margin-bottom: 24px;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 233, 215, 0.86));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(25, 50, 74, 0.07);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 66px;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    .hero-copy p {
+      max-width: 58ch;
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .primary-cta {
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #f7f3e6;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: var(--shadow-hard);
+    }
+
+    .secondary-link {
+      color: var(--muted);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .metric-card,
+    .feature-card,
+    .signup-card,
+    .rail,
+    .story-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric-card {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .metric-card span {
+      display: block;
+      font-size: 40px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .rail {
+      overflow: hidden;
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .rail span {
+      display: inline-block;
+      min-width: 1220px;
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card {
+      padding: 20px;
+      border-radius: 26px;
+    }
+
+    .feature-card:nth-child(2) {
+      border-radius: 8px;
+    }
+
+    .feature-card:nth-child(3) {
+      border-radius: 18px 42px 18px 42px;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 14px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(215, 207, 170, 0.9), rgba(215, 207, 170, 0.3));
+    }
+
+    .feature-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .story-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .story-card,
+    .signup-card {
+      padding: 22px;
+    }
+
+    .story-card {
+      border-radius: var(--radius-md);
+    }
+
+    .story-card p,
+    .signup-card p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .icon-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .icon-button svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--ink);
+      stroke-width: 1.7;
+      fill: none;
+    }
+
+    .signup-card {
+      border-radius: var(--radius-sm);
+    }
+
+    .signup-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .signup-form input {
+      padding: 14px 16px;
+      border: 1px solid rgba(25, 50, 74, 0.1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      font: inherit;
+    }
+
+    .signup-form button {
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 14px;
+      background: #1d3342;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="brand">Northstar Cloud</div>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="/design-review-eval.html">Home</a>
+        <a href="/design-review-eval-pricing.html">Pricing</a>
+        <a href="#stories">Stories</a>
+        <a href="#waitlist">Waitlist</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Next-gen intelligence</span>
+          <h1>The all-in-one AI growth platform for modern teams.</h1>
+          <p>Transform workflows, unlock powerful synergies, and accelerate innovation with beautiful dashboards, seamless automations, and human-centric intelligence for every organization.</p>
+          <p>Northstar Cloud helps creators, founders, operators, agencies, and enterprise visionaries do more with less through a premium experience that feels familiar from the first second.</p>
+          <div class="hero-actions">
+            <button class="primary-cta">Start your journey</button>
+            <a class="secondary-link" href="/design-review-eval-pricing.html">See every feature</a>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="Summary metrics">
+          <div class="metric-card">
+            <strong>Lift</strong>
+            <span>320%</span>
+            <p>Pipeline acceleration with zero-friction onboarding and instant activation.</p>
+          </div>
+          <div class="metric-card">
+            <strong>Momentum</strong>
+            <span>14 days</span>
+            <p>Average time from sign-up to strategic clarity across modern digital teams.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="rail">
+        <span>Beautiful dashboards - Seamless automations - Next-gen growth - Premium insights - Trusted by fast-moving teams - Beautiful dashboards - Seamless automations - Next-gen growth - Premium insights</span>
+      </div>
+
+      <p class="section-label">Why teams love it</p>
+      <section class="feature-grid" aria-label="Feature highlights">
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h2>Automate</h2>
+          <p>Eliminate friction with smart workflows that feel intuitive, elevated, and endlessly scalable.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h2>Optimize</h2>
+          <p>Unlock clarity with elegant analytics and a modern workspace that supports every stakeholder.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h2>Scale</h2>
+          <p>Empower your teams with configurable experiences, delightful collaboration, and timeless polish.</p>
+        </article>
+      </section>
+
+      <section class="story-layout" id="stories">
+        <article class="story-card">
+          <p class="section-label">Social proof</p>
+          <h2>Every brand looks stronger the moment Northstar arrives.</h2>
+          <p>Operators say it feels premium. Designers say it feels polished. Leaders say it feels strategic. The page says all three without ever explaining what is unique about the product.</p>
+          <div class="icon-row">
+            <button class="icon-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+            </button>
+            <button class="icon-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"></circle></svg>
+            </button>
+            <button class="icon-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6"></path><path d="M8 6h10v10"></path></svg>
+            </button>
+          </div>
+        </article>
+
+        <aside class="signup-card" id="waitlist">
+          <p class="section-label">Join the waitlist</p>
+          <h2>Reserve your launch slot.</h2>
+          <p>Stay close to the roadmap and get product updates before everyone else.</p>
+          <form class="signup-form">
+            <input type="text" placeholder="Your name">
+            <input type="email" placeholder="Work email">
+            <input type="text" placeholder="Team name">
+            <button type="submit">Request access</button>
+          </form>
+        </aside>
+      </section>
+    </main>
+
+    <p class="footer-note">Northstar Cloud - beautiful software for everyone</p>
+  </div>
+</body>
+</html>
