@@ -13,4 +13,5 @@ Rules:
 - Write the report under `.gstack/ship-reports/` unless the request gives an explicit output path
 - Run an explicit or clearly repo-local test command
 - Use local review artifacts if available
-- Do not commit, push, or use GitHub APIs
+- By default keep the command local-only and report-first
+- If the request explicitly asks for commit, push, or PR preparation, perform those actions only after readiness checks pass

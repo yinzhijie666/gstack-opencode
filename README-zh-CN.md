@@ -42,12 +42,14 @@
 - `/ship`
 - `/debug`
 - `/document-release`
-
-当前仓库里还没有原生迁移到 OpenCode 的命令：
-
 - `/office-hours`
 - `/retro`
 - `/setup-browser-cookies`
+- `/gstack-upgrade`
+
+当前仓库里还没有原生迁移到 OpenCode 的命令：
+
+- 当前历史顶层 workflow 名称都已经进入 OpenCode 主线
 
 ## 上游来源与当前范围
 
@@ -116,7 +118,7 @@ bun run build
 - 它重点关注高信号问题类别，例如 SQL/数据安全、竞态/并发、信任边界，以及 enum/value 完整性
 - 它会在 `.gstack/review-reports/` 下写出本地报告
 
-注意：当前这个 OpenCode v1 版本的 `/review` 不会自动修代码。
+注意：当你明确要求只做审查时，`/review` 会保持 report-first；但当你明确要求修复 obvious issues 时，它也可以进入受限的低风险 fix pass。
 
 ### QA
 
@@ -124,14 +126,14 @@ bun run build
 - `/qa-only` 使用相同的浏览器方法论，但明确是 report-only
 - 两者都会使用本地 `browse` 二进制，并保留截图证据
 
-注意：在当前这个 OpenCode 第一版 slice 里，`/qa` 也是 report-only。它还不支持 Claude 版本里的 test-fix-verify loop，也不会自动生成 regression test；同时它要求你提供一个显式的目标 URL 或本地页面路径。
+注意：当你明确要求 report-only 或禁止改代码时，`/qa` 会保持 report-only；但当你明确要求修复问题、且仓库里存在可编辑的本地源码与测试路径时，它可以进入受限 fix loop，并在合适时补回 regression coverage。
 
 ### Design
 
 - `/design-consultation` 会输出一个边界明确的设计方向报告
 - `/design-review` 会针对一个显式的本地渲染页面做浏览器证据驱动的审查，并在 `.gstack/design-reports/` 下写出设计报告
 
-注意：当前仓库里的 OpenCode `/design-review` 是 report-first slice。它只停留在单个显式本地页面上，不会自动修改 UI 代码。
+注意：当你要求只做审查时，`/design-review` 会保持 audit-only；但当你明确要求修复、且本地存在可编辑源码时，它也可以对当前审查页面做受限 UI 修补并附带 before/after 证据。
 
 ### Debugging
 
@@ -143,7 +145,7 @@ bun run build
 - `/ship` 会检查本地分支状态、测试状态和 review readiness
 - 它会在 `.gstack/ship-reports/` 下写出发布准备报告
 
-注意：当前仓库里的 OpenCode `/ship` 是 local-only 的。存在显式或明显的 repo-local 测试命令时它会运行；否则会返回 `NEEDS_TEST_COMMAND`。它不会 commit、push，也不会开 PR。
+注意：`/ship` 默认仍然是 local-first 的。存在显式或明显的 repo-local 测试命令时它会运行；否则会返回 `NEEDS_TEST_COMMAND`。当你明确要求 commit、push 或 PR 准备时，它会在 readiness checks 全绿后再进入这些动作。
 
 ### 文档同步
 
@@ -190,6 +192,10 @@ OpenCode: 基于分支状态、测试结果和 review 工件，
 - `/design-review`
 - `/debug`
 - `/document-release`
+- `/office-hours`
+- `/retro`
+- `/setup-browser-cookies`
+- `/gstack-upgrade`
 
 这意味着当前已 shipped 的 OpenCode workflow 不只是“文档里写了”，而是仓库里真的有可运行的验证。
 
@@ -207,8 +213,17 @@ OPENCODE_SMOKE=1 bun test test/opencode-plan-ceo-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-eng-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-design-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-review-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-commit-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-push-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-design-review-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-office-hours-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-retro-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-setup-browser-cookies-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-gstack-upgrade-smoke.test.ts
 ```
 
 这些是具有代表性的已迁移 workflow 验证，不应被解读为“上游历史路径已经全部迁移完成”。

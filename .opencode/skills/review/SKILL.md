@@ -1,6 +1,6 @@
 ---
 name: review
-description: Run a structural pre-landing code review in OpenCode and write a durable local report without modifying code.
+description: Run a structural pre-landing code review in OpenCode, write a durable local report, and optionally apply low-risk fixes when explicitly requested.
 compatibility: opencode
 metadata:
   host: opencode
@@ -10,7 +10,7 @@ metadata:
 
 ## What This Skill Does
 
-This is the first OpenCode-native `/review` slice for gstack. It reviews the current branch diff against a local base branch, looks for structural issues that tests often miss, and writes a report.
+This is the OpenCode-native `/review` slice for gstack. It reviews the current branch diff against a local base branch, looks for structural issues that tests often miss, and writes a report.
 
 In this v1 slice:
 
@@ -19,8 +19,9 @@ In this v1 slice:
 - read `review/checklist.md`
 - focus on the highest-signal structural categories
 - write findings under `.gstack/review-reports/`
+- optionally apply low-risk fixes when the user explicitly requests a fixing pass
 
-Do not modify code in this v1 review workflow. Do not apply auto-fixes. Do not push, comment on PRs, or call external review services.
+By default this workflow is report-first. If the request explicitly says to fix obvious issues, you must apply bounded local fixes for the highest-confidence low-risk findings and re-run the smallest relevant verification. Do not push, comment on PRs, or call external review services.
 
 ## Execution Contract
 
@@ -29,6 +30,8 @@ Do not modify code in this v1 review workflow. Do not apply auto-fixes. Do not p
 - Use local git, file reads, and direct report writing
 - Always write the report file before producing the final answer
 - If review cannot proceed, still write a short report explaining why
+- If the request says `do not modify code` or `report only`, stay report-only
+- If the request explicitly asks for fixes, apply directly evidenced, low-risk local fixes for the highest-confidence findings
 
 ## Base Branch Detection
 
@@ -114,7 +117,18 @@ That means:
 
 This category is not diff-only. It requires follow-through outside the hunk.
 
-### 4. Write Findings
+### 4. Optional Fix Loop
+
+Only enter this path when the user explicitly asks for fixes.
+
+- choose the highest-confidence low-risk findings
+- apply the smallest local fix that resolves each chosen issue
+- re-run the smallest relevant verification for each fix
+- record exactly what changed
+
+Do not perform broad refactors, speculative rewrites, or external side effects.
+
+### 5. Write Findings
 
 Write a durable report to `.gstack/review-reports/`.
 
@@ -136,6 +150,8 @@ Every finding must include:
 - concrete evidence
 - recommended fix
 
+If fixes were applied, append a `Fixes Applied` section with the changed files and verification performed.
+
 If there are no issues, write `Pre-Landing Review: No issues found.` and include the reviewed base branch plus diff summary.
 
 If review cannot proceed because there is no base branch or no diff, still write a short report file with that outcome.
@@ -148,4 +164,5 @@ If review cannot proceed because there is no base branch or no diff, still write
 - Escalate uncertainty into the report instead of inventing confidence
 - Stay local: no GitHub APIs, no external review services, no PR assumptions
 - Do not load unrelated helper skills or orchestration flows
-- Do not modify code, tests, docs, or configs in this v1 review workflow
+- Do not modify code unless the request explicitly asks for fixes
+- Do not modify tests, docs, or configs unless they are part of a directly necessary low-risk fix

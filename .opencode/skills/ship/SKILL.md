@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Prepare a local branch for shipping by checking branch state, local tests, and review readiness, then write a durable report.
+description: Prepare a branch for shipping by checking branch state, local tests, review readiness, and optionally carrying out explicit shipping actions.
 compatibility: opencode
 metadata:
   host: opencode
@@ -19,8 +19,9 @@ In this v1 slice:
 - run an explicit or conservative repo-local test command
 - inspect a local review artifact if one exists
 - classify readiness and write a durable report
+- when explicitly requested, prepare commit/push/PR actions after readiness checks pass
 
-Do not commit, push, create a PR, update versions, or edit changelogs in this v1 workflow.
+By default this workflow is local-only and report-first. If the user explicitly asks for a commit, push, or PR in the same request and the readiness checks pass, you must carry out the requested action and record it in the report.
 
 ## Execution Contract
 
@@ -28,6 +29,7 @@ Do not commit, push, create a PR, update versions, or edit changelogs in this v1
 - Do not use background tasks or todo lists for this v1 flow
 - Write the report file before returning the final answer
 - If a hard gate fails, still write the report and mark the blocked status clearly
+- Do not perform external side effects unless the request explicitly asks for them
 
 ## Base Branch Detection
 
@@ -122,10 +124,18 @@ Use one of these statuses in the report:
 
 Write the report file even for blocked outcomes. Never exit early without a written report.
 
+### 5. Optional Shipping Actions
+
+Only enter this path when the user explicitly asks for the action.
+
+- if the user explicitly asks for a commit and readiness is green, create the local commit
+- if the user explicitly asks for push or PR creation and the environment supports it, proceed only after all local gates are green
+- record every external-facing step in the report
+
 ## Rules
 
 - Keep the report factual and local-only
 - Start the report file before running tests or reading review artifacts
-- Do not fetch, merge, commit, push, or open PRs
-- Do not modify source code, docs, or changelogs
-- Defer versioning, changelog, TODOs, and PR work to a later slice
+- Do not fetch, merge, commit, push, or open PRs unless the user explicitly asks for that action
+- Do not modify source code, docs, or changelogs unless the user explicitly requests a shipping step that requires it
+- Defer versioning and changelog work unless the user explicitly requests them

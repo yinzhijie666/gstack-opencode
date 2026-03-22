@@ -1,6 +1,6 @@
 ---
 name: qa
-description: Run browser-first QA in OpenCode, capture evidence, and write a structured report without modifying source code.
+description: Run browser-first QA in OpenCode, capture evidence, optionally fix local issues, and write a structured report.
 compatibility: opencode
 metadata:
   host: opencode
@@ -10,7 +10,7 @@ metadata:
 
 ## What This Skill Does
 
-This is the first OpenCode-native `/qa` slice for gstack. It runs browser-driven QA, captures evidence, and writes a structured report.
+This is the OpenCode-native `/qa` slice for gstack. It runs browser-driven QA, captures evidence, and writes a structured report.
 
 In this v1 slice:
 
@@ -19,8 +19,9 @@ In this v1 slice:
 - classify issues by severity and category
 - compute a health score
 - write outputs under `.gstack/qa-reports/`
+- when explicitly requested and local editable source exists, enter a bounded fix loop and re-verify
 
-Do not modify source code in this v1 QA workflow. Do not run a fix loop. Do not create commits. For this first OpenCode slice, `/qa` is report-only just like `/qa-only`; follow-up fix/test generation belongs to a later slice.
+By default `/qa` is report-first. If the request explicitly says `report only` or `do not modify code`, stay in report-only mode. If the request explicitly asks to fix issues and local editable source exists, you may apply a bounded local fix loop and add regression coverage when practical. Do not create commits.
 
 ## Required Inputs
 
@@ -50,8 +51,8 @@ Write outputs here:
 ## Execution Contract
 
 - stay local and do not load unrelated skills
-- in this v1 slice, write reports only; do not modify source code
-- in this v1 slice, behave as a report-only QA audit and do not branch into fix planning or regression generation
+- if the request says `report only` or `do not modify code`, stay report-only
+- if the request explicitly asks for fixes, use a bounded local fix loop and re-verify the result
 - if the request gives exact report or baseline output paths, use those exact paths instead of generating alternate filenames
 - create screenshot artifacts under `.gstack/qa-reports/screenshots/`
 - in quick mode, keep the report bounded to 2-4 high-confidence issues
@@ -198,6 +199,26 @@ If any browser command fails after partial evidence has already been captured, s
 
 In quick mode, each issue heading must start with its literal issue ID, for example `### ISSUE-001: Broken link`.
 
+### 7. Optional Fix Loop
+
+Only enter this path when the user explicitly asks for fixes and local editable source exists.
+
+- If the user already gives exact issues plus an exact source file, prefer a short fix path:
+  - reproduce only the named issues
+  - edit only the named file
+  - re-run the smallest browser check that proves the fix
+  - stop after the requested issues are addressed
+
+- If the user also explicitly asks for one regression test and the repo already has a clear local test path, add exactly one small regression test tied to the named file and named issues before the final re-check
+
+- choose the smallest set of highest-confidence issues
+- map each issue to likely local source files before editing
+- apply the smallest credible fix
+- re-run the relevant browser checks
+- add or extend a regression test when the repo already has a clear local test path
+
+If the repo has no clear local test framework, record that limitation in the report instead of inventing one.
+
 ## Rules
 
 - Prefer direct browser evidence over speculation
@@ -205,5 +226,6 @@ In quick mode, each issue heading must start with its literal issue ID, for exam
 - Use `snapshot -D` whenever an interaction should visibly change page state
 - After creating screenshots, read them so the user can see the evidence
 - Keep the report honest: only include issues you actually observed
-- Do not modify code, tests, configs, or docs in this v1 QA workflow
+- Do not modify code unless the request explicitly asks for fixes
+- Do not create commits, push changes, or open PRs from this workflow
 - Do not claim regression comparisons unless you actually compared against a baseline

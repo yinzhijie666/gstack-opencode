@@ -73,12 +73,13 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('compatibility: opencode');
   });
 
-  test('OpenCode qa skill is report-first and references shared QA assets', () => {
+  test('OpenCode qa skill supports report-first mode and optional fix loops while referencing shared QA assets', () => {
     const content = read('.opencode/skills/qa/SKILL.md');
     expect(content).toContain('qa/templates/qa-report-template.md');
     expect(content).toContain('qa/references/issue-taxonomy.md');
     expect(content).toContain('.gstack/qa-reports/');
-    expect(content).toContain('Do not modify source code in this v1 QA workflow');
+    expect(content).toContain('If the request explicitly asks to fix issues');
+    expect(content).toContain('regression coverage');
     expect(content).toContain('Load the `browse` skill first');
   });
 
@@ -97,7 +98,7 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('agent: build');
     expect(content).toContain('Load the `browse` and `qa` skills');
     expect(content).toContain('$ARGUMENTS');
-    expect(content).toContain('Do not modify code');
+    expect(content).toContain('bounded fix loop');
   });
 
   test('OpenCode qa-only skill exists with valid required frontmatter', () => {
@@ -144,11 +145,12 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('compatibility: opencode');
   });
 
-  test('OpenCode review skill is report-first and references checklist plus local reports', () => {
+  test('OpenCode review skill references checklist plus local reports and can optionally fix obvious issues', () => {
     const content = read('.opencode/skills/review/SKILL.md');
     expect(content).toContain('review/checklist.md');
     expect(content).toContain('.gstack/review-reports/');
-    expect(content).toContain('Do not modify code in this v1 review workflow');
+    expect(content).toContain('must apply bounded local fixes');
+    expect(content).toContain('Fixes Applied');
     expect(content).toContain('Enum & Value Completeness');
     expect(content).toContain('origin/main');
   });
@@ -158,7 +160,7 @@ describe('OpenCode migration assets', () => {
     expect(content).not.toContain('AskUserQuestion');
     expect(content).not.toContain('.claude/skills');
     expect(content).not.toContain('Greptile');
-    expect(content).not.toContain('AUTO-FIX');
+    expect(content).not.toContain('.claude/skills');
   });
 
   test('OpenCode review command exists and delegates through the review skill', () => {
@@ -168,7 +170,7 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('agent: build');
     expect(content).toContain('Load the `review` skill');
     expect(content).toContain('$ARGUMENTS');
-    expect(content).toContain('Do not modify code');
+    expect(content).toContain('apply low-risk local fixes for the highest-confidence findings');
   });
 
   test('OpenCode document-release skill exists with valid required frontmatter', () => {
@@ -184,8 +186,10 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('.gstack/document-release/');
     expect(content).toContain('README.md');
     expect(content).toContain('README-zh-CN.md');
+    expect(content).toContain('AGENTS.md');
     expect(content).toContain('ARCHITECTURE.md');
     expect(content).toContain('CONTRIBUTING.md');
+    expect(content).toContain('TODOS.md');
     expect(content).toContain('docs/**/*.md');
     expect(content).toContain('factual updates only');
   });
@@ -284,21 +288,21 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('compatibility: opencode');
   });
 
-  test('OpenCode ship skill is local-only and writes ship reports', () => {
+  test('OpenCode ship skill writes ship reports and supports explicit shipping actions', () => {
     const content = read('.opencode/skills/ship/SKILL.md');
     expect(content).toContain('.gstack/ship-reports/');
     expect(content).toContain('Review Readiness');
     expect(content).toContain('Verification');
     expect(content).toContain('Release Prep Status');
+    expect(content).toContain('Optional Shipping Actions');
   });
 
-  test('OpenCode ship skill does not leak push or GitHub behavior', () => {
+  test('OpenCode ship skill keeps shipping actions explicit and bounded', () => {
     const content = read('.opencode/skills/ship/SKILL.md');
     expect(content).not.toContain('AskUserQuestion');
     expect(content).not.toContain('.claude/skills');
-    expect(content).not.toContain('gh ');
-    expect(content).not.toContain('git push');
-    expect(content).not.toContain('git commit');
+    expect(content).toContain('must carry out the requested action');
+    expect(content).toContain('push or PR creation');
   });
 
   test('OpenCode ship command exists and delegates through the skill', () => {
@@ -308,6 +312,7 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('agent: build');
     expect(content).toContain('Load the `ship` skill');
     expect(content).toContain('$ARGUMENTS');
+    expect(content).toContain('perform those actions only after readiness checks pass');
   });
 
   test('OpenCode plan-ceo-review skill exists with valid required frontmatter', () => {
@@ -421,7 +426,7 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('compatibility: opencode');
   });
 
-  test('OpenCode design-review skill defines a bounded browser-evidence report contract', () => {
+  test('OpenCode design-review skill defines a bounded browser-evidence report contract with optional fix mode', () => {
     const content = read('.opencode/skills/design-review/SKILL.md');
     expect(content).toContain('Load the `browse` skill first');
     expect(content).toContain('.gstack/design-reports/');
@@ -432,7 +437,8 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('AI Slop Signals');
     expect(content).toContain('Responsive & Accessibility Observations');
     expect(content).toContain('Capture at least one screenshot artifact');
-    expect(content).toContain('Do not modify source code in this v1 design review workflow');
+    expect(content).toContain('Optional Fix Loop');
+    expect(content).toContain('before/after evidence');
   });
 
   test('OpenCode design-review skill does not leak Claude-only or fix-loop behavior', () => {
@@ -451,6 +457,102 @@ describe('OpenCode migration assets', () => {
     expect(content).toContain('agent: build');
     expect(content).toContain('Load the `browse` and `design-review` skills');
     expect(content).toContain('$ARGUMENTS');
+    expect(content).toContain('bounded local UI fixes');
+  });
+
+  test('OpenCode office-hours skill exists with valid required frontmatter', () => {
+    const content = read('.opencode/skills/office-hours/SKILL.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('name: office-hours');
+    expect(content).toContain('compatibility: opencode');
+  });
+
+  test('OpenCode office-hours skill defines a bounded local memo', () => {
+    const content = read('.opencode/skills/office-hours/SKILL.md');
+    expect(content).toContain('.gstack/office-hours/');
+    expect(content).toContain('Core Question');
+    expect(content).toContain('Demand Reality');
+    expect(content).toContain('Narrowest Wedge');
     expect(content).toContain('Do not modify code');
+  });
+
+  test('OpenCode office-hours command exists and delegates through the skill', () => {
+    const content = read('.opencode/commands/office-hours.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('description: Explore an idea like YC office hours');
+    expect(content).toContain('Load the `office-hours` skill');
+    expect(content).toContain('$ARGUMENTS');
+  });
+
+  test('OpenCode retro skill exists with valid required frontmatter', () => {
+    const content = read('.opencode/skills/retro/SKILL.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('name: retro');
+    expect(content).toContain('compatibility: opencode');
+  });
+
+  test('OpenCode retro skill defines a bounded local retrospective', () => {
+    const content = read('.opencode/skills/retro/SKILL.md');
+    expect(content).toContain('.gstack/retro/');
+    expect(content).toContain('Shipping Summary');
+    expect(content).toContain('Wins');
+    expect(content).toContain('Friction');
+    expect(content).toContain('Test Health Signals');
+  });
+
+  test('OpenCode retro command exists and delegates through the skill', () => {
+    const content = read('.opencode/commands/retro.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('description: Review recent local repo history');
+    expect(content).toContain('Load the `retro` skill');
+    expect(content).toContain('$ARGUMENTS');
+  });
+
+  test('OpenCode setup-browser-cookies skill exists with valid required frontmatter', () => {
+    const content = read('.opencode/skills/setup-browser-cookies/SKILL.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('name: setup-browser-cookies');
+    expect(content).toContain('compatibility: opencode');
+  });
+
+  test('OpenCode setup-browser-cookies skill is browse-backed and writes local setup summaries', () => {
+    const content = read('.opencode/skills/setup-browser-cookies/SKILL.md');
+    expect(content).toContain('Load the `browse` skill first');
+    expect(content).toContain('cookie-import-browser');
+    expect(content).toContain('.gstack/browser-session/');
+    expect(content).toContain('Do not modify code');
+  });
+
+  test('OpenCode setup-browser-cookies command exists and delegates through browse plus the skill', () => {
+    const content = read('.opencode/commands/setup-browser-cookies.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('description: Prepare authenticated browser sessions');
+    expect(content).toContain('Load the `browse` and `setup-browser-cookies` skills');
+    expect(content).toContain('$ARGUMENTS');
+  });
+
+  test('OpenCode gstack-upgrade skill exists with valid required frontmatter', () => {
+    const content = read('.opencode/skills/gstack-upgrade/SKILL.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('name: gstack-upgrade');
+    expect(content).toContain('compatibility: opencode');
+  });
+
+  test('OpenCode gstack-upgrade skill defines a bounded readiness report', () => {
+    const content = read('.opencode/skills/gstack-upgrade/SKILL.md');
+    expect(content).toContain('.gstack/gstack-upgrade/');
+    expect(content).toContain('Version Check');
+    expect(content).toContain('Setup State');
+    expect(content).toContain('Recommended Action');
+    expect(content).toContain('CURRENT');
+    expect(content).toContain('NEEDS_SETUP');
+  });
+
+  test('OpenCode gstack-upgrade command exists and delegates through the skill', () => {
+    const content = read('.opencode/commands/gstack-upgrade.md');
+    expect(content.startsWith('---\n')).toBe(true);
+    expect(content).toContain('description: Check local gstack setup health');
+    expect(content).toContain('Load the `gstack-upgrade` skill');
+    expect(content).toContain('$ARGUMENTS');
   });
 });
