@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Audit a local rendered page with browser evidence and write a bounded design report without modifying source code.
+description: Audit a local rendered page with browser evidence, write a bounded design report, and optionally apply local UI fixes when explicitly requested.
 compatibility: opencode
 metadata:
   host: opencode
@@ -48,8 +48,10 @@ Capture at least one screenshot artifact and keep screenshot paths in the report
 - Keep the report bounded to the required sections only
 - Keep each section short: 2-5 bullets or 1 short paragraph
 - Do not modify code, tests, configs, docs, or design files
+- If the request says `do not modify code` or `report only`, stay audit-only
+- If the request explicitly asks for fixes and local editable source exists, you may apply bounded local UI fixes and capture after evidence
 
-Do not modify source code in this v1 design review workflow.
+By default this workflow is report-first. Only enter fix mode when the user explicitly asks for it.
 
 ## Output
 
@@ -80,10 +82,21 @@ $B goto <target-url>
 $B snapshot -i -a -o .gstack/design-reports/screenshots/first-impression.png
 $B console --errors
 $B viewport 390x844
-$B screenshot .gstack/design-reports/screenshots/mobile.png
+$B snapshot -a -o .gstack/design-reports/screenshots/mobile.png
 ```
 
-If the mobile screenshot step fails, continue with the annotated screenshot and say that mobile capture was not completed.
+If the mobile capture step fails, continue with the annotated screenshot and say that mobile capture was not completed.
+
+## Optional Fix Loop
+
+Only enter this path when the user explicitly asks for fixes.
+
+- identify the smallest likely local source files tied to the observed issue
+- apply minimal UI/design fixes only
+- re-run the relevant screenshots or snapshots using repo-local output paths only
+- append before/after evidence to the report
+
+Do not expand beyond the requested page or turn this into a broad redesign.
 
 ## Report Contract
 
@@ -102,4 +115,4 @@ If the mobile screenshot step fails, continue with the annotated screenshot and 
 - Use browser evidence over speculation
 - Do not navigate beyond the single target page
 - Do not pad the report beyond 3 high-confidence findings
-- Do not create a fix plan or modify code
+- Do not modify code unless the request explicitly asks for fixes
