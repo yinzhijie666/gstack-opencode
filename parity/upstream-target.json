@@ -1,0 +1,5 @@
+{
+  "upstreamRepo": "https://github.com/garrytan/gstack",
+  "upstreamSha": "1f4b6fd7a2a349dfc6f04d158b8b7778b5b74232",
+  "strategy": "restore upstream workflow intent in native OpenCode form"
+}
