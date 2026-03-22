@@ -152,7 +152,7 @@ Important: `/ship` is still local-first by default. It runs an explicit or obvio
 - `/document-release` updates a narrow, factual set of docs from local repository changes
 - It writes a summary artifact under `.gstack/document-release/`
 
-In this v1 slice, `README.md`, `README-zh-CN.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, and `docs/**/*.md` are in scope. `CHANGELOG.md`, `VERSION`, `TODOS.md`, and `README.claude.backup.md` are explicitly out of scope.
+In this v1 slice, `README.md`, `README-zh-CN.md`, `AGENTS.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, `TODOS.md`, and `docs/**/*.md` are in scope. `CHANGELOG.md`, `VERSION`, and `README.claude.backup.md` are explicitly out of scope.
 
 ## A Realistic OpenCode Flow
 
@@ -216,6 +216,7 @@ OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-review-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-regression-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-commit-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-push-smoke.test.ts

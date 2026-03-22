@@ -82,7 +82,7 @@
       "upstreamPath": "document-release/",
       "localCommand": ".opencode/commands/document-release.md",
       "classification": "adapt-opencode",
-      "status": "shipped"
+      "status": "shipped-v1"
     },
     {
       "name": "office-hours",

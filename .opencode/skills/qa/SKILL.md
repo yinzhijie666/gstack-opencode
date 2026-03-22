@@ -210,12 +210,14 @@ Only enter this path when the user explicitly asks for fixes and local editable 
   - stop after the requested issues are addressed
 
 - If the user also explicitly asks for one regression test and the repo already has a clear local test path, add exactly one small regression test tied to the named file and named issues before the final re-check
+- If the user gives an exact regression test file path, write that exact file and run the smallest test command that exercises only that test
 
 - choose the smallest set of highest-confidence issues
 - map each issue to likely local source files before editing
 - apply the smallest credible fix
 - re-run the relevant browser checks
 - add or extend a regression test when the repo already has a clear local test path
+- if an exact regression test path is given, create that exact file and run the smallest matching test command only
 
 If the repo has no clear local test framework, record that limitation in the report instead of inventing one.
 

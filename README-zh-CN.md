@@ -152,7 +152,7 @@ bun run build
 - `/document-release` 会根据本地仓库变更，更新一组范围很窄、只做事实性修改的文档
 - 它会在 `.gstack/document-release/` 下写出摘要工件
 
-在当前 v1 slice 里，`README.md`、`README-zh-CN.md`、`ARCHITECTURE.md`、`CONTRIBUTING.md` 和 `docs/**/*.md` 在作用范围内；`CHANGELOG.md`、`VERSION`、`TODOS.md` 和 `README.claude.backup.md` 明确不在范围内。
+在当前 v1 slice 里，`README.md`、`README-zh-CN.md`、`AGENTS.md`、`ARCHITECTURE.md`、`CONTRIBUTING.md`、`TODOS.md` 和 `docs/**/*.md` 在作用范围内；`CHANGELOG.md`、`VERSION` 和 `README.claude.backup.md` 明确不在范围内。
 
 ## 一个更贴近现实的 OpenCode 使用流
 
@@ -216,6 +216,7 @@ OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-review-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-regression-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-commit-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-push-smoke.test.ts

@@ -41,6 +41,7 @@ export interface OpencodeCommandOptions {
   commandName: string;
   prompt: string;
   format?: 'json' | 'default';
+  env?: Record<string, string>;
 }
 
 export function buildOpencodeArgs(options: OpencodeCommandOptions): string[] {
@@ -81,6 +82,7 @@ export function runOpencodeCommand(options: OpencodeCommandOptions) {
     ...(fs.existsSync(browseServerScript) && !process.env.BROWSE_SERVER_SCRIPT
       ? { BROWSE_SERVER_SCRIPT: browseServerScript }
       : {}),
+    ...(options.env ?? {}),
   };
 
   const deadline = Date.now() + 30 * 60 * 1000;

@@ -41,16 +41,16 @@ describe('OpenCode QA regression smoke', () => {
       const smoke = runOpencodeCommand({
         cwd: tmp,
         commandName: 'qa',
-        prompt: `Open ${server.baseUrl}/qa-eval.html, fix exactly these two issues in qa-eval.html: the broken Resources link and the permanently disabled submit button. Then add one regression test under test/ that proves those two issues stay fixed, and write the QA report to .gstack/qa-reports/opencode-regression-smoke.md and the baseline to .gstack/qa-reports/opencode-regression-smoke-baseline.json. Do not commit or push.`,
+        prompt: `Open ${server.baseUrl}/qa-eval.html, fix exactly these two issues in qa-eval.html: the broken Resources link and the permanently disabled submit button. Then write exactly one regression test to test/qa-eval-regression.test.ts that reads qa-eval.html and verifies those two issues stay fixed, run only bun test test/qa-eval-regression.test.ts, and write the QA report to .gstack/qa-reports/opencode-regression-smoke.md and the baseline to .gstack/qa-reports/opencode-regression-smoke-baseline.json. Do not commit or push.`,
       });
 
       expect(smoke.exitCode).toBe(0);
 
       const testDir = path.join(tmp, 'test');
       const generatedTests = fs.readdirSync(testDir).filter((entry) => entry.endsWith('.test.ts'));
-      expect(generatedTests.length).toBeGreaterThanOrEqual(2);
+      expect(generatedTests).toContain('qa-eval-regression.test.ts');
 
-      const testRun = Bun.spawnSync(['bun', 'test'], { cwd: tmp, stdout: 'pipe', stderr: 'pipe' });
+      const testRun = Bun.spawnSync(['bun', 'test', 'test/qa-eval-regression.test.ts'], { cwd: tmp, stdout: 'pipe', stderr: 'pipe' });
       expect(testRun.exitCode).toBe(0);
     } finally {
       server.stop();
