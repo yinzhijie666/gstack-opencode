@@ -42,12 +42,14 @@ OpenCode-native commands currently present in this repo:
 - `/ship`
 - `/debug`
 - `/document-release`
-
-Not yet ported as native OpenCode commands in this repo:
-
 - `/office-hours`
 - `/retro`
 - `/setup-browser-cookies`
+- `/gstack-upgrade`
+
+Not yet ported as native OpenCode commands in this repo:
+
+- none of the historical top-level workflow names are missing from the current OpenCode surface
 
 ## Upstream And Scope
 
@@ -116,7 +118,7 @@ These are report-first slices. They are good for pressure-testing a plan before 
 - It focuses on high-signal categories such as SQL/data safety, race conditions, trust boundaries, and enum/value completeness
 - It writes a local report under `.gstack/review-reports/`
 
-Important: the OpenCode `/review` slice does not auto-fix code in this v1 version.
+Important: `/review` stays report-first when you ask for review-only output, but it can enter a bounded low-risk fix pass when you explicitly ask it to fix obvious issues.
 
 ### QA
 
@@ -124,14 +126,14 @@ Important: the OpenCode `/review` slice does not auto-fix code in this v1 versio
 - `/qa-only` uses the same browser methodology but is explicitly report-only
 - Both use the local `browse` binary and preserve screenshot evidence
 
-Important: in this first OpenCode slice, `/qa` is also report-only. It does not yet do the Claude-era test-fix-verify loop or regression-test generation, and it requires an explicit target URL or local page path.
+Important: `/qa` stays report-only when you ask for report-only output, but it can enter a bounded local fix loop and add regression coverage when you explicitly ask for fixes and the repo has an editable local source/test path.
 
 ### Design
 
 - `/design-consultation` writes a bounded design direction report
 - `/design-review` audits one explicit local rendered page with browser evidence and writes a design report under `.gstack/design-reports/`
 
-Important: the OpenCode `/design-review` slice is report-first in this repo today. It stays on one explicit local page and does not patch UI code automatically.
+Important: `/design-review` stays audit-only when requested, but it can apply bounded local UI fixes for the audited page when you explicitly ask for fixes and local editable source exists.
 
 ### Debugging
 
@@ -143,14 +145,14 @@ Important: the OpenCode `/design-review` slice is report-first in this repo toda
 - `/ship` checks local branch state, test status, and review readiness
 - It writes a release-prep report under `.gstack/ship-reports/`
 
-Important: the OpenCode `/ship` slice is local-only in this repo today. It runs an explicit or obvious repo-local test command when one exists, otherwise reports `NEEDS_TEST_COMMAND`. It does not commit, push, or open a PR.
+Important: `/ship` is still local-first by default. It runs an explicit or obvious repo-local test command when one exists, otherwise reports `NEEDS_TEST_COMMAND`. When you explicitly ask for commit, push, or PR preparation, it may proceed only after readiness checks pass.
 
 ### Docs Sync
 
 - `/document-release` updates a narrow, factual set of docs from local repository changes
 - It writes a summary artifact under `.gstack/document-release/`
 
-In this v1 slice, `README.md`, `README-zh-CN.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, and `docs/**/*.md` are in scope. `CHANGELOG.md`, `VERSION`, `TODOS.md`, and `README.claude.backup.md` are explicitly out of scope.
+In this v1 slice, `README.md`, `README-zh-CN.md`, `AGENTS.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, `TODOS.md`, and `docs/**/*.md` are in scope. `CHANGELOG.md`, `VERSION`, and `README.claude.backup.md` are explicitly out of scope.
 
 ## A Realistic OpenCode Flow
 
@@ -190,6 +192,10 @@ The following OpenCode slices are backed by static asset checks and smoke covera
 - `/design-review`
 - `/debug`
 - `/document-release`
+- `/office-hours`
+- `/retro`
+- `/setup-browser-cookies`
+- `/gstack-upgrade`
 
 This means the currently shipped OpenCode workflows are not just documented: they have runnable validation in this repository.
 
@@ -207,8 +213,18 @@ OPENCODE_SMOKE=1 bun test test/opencode-plan-ceo-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-eng-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-design-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-review-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-regression-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-commit-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-push-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-design-review-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-office-hours-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-retro-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-setup-browser-cookies-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-gstack-upgrade-smoke.test.ts
 ```
 
 Those are representative migrated workflow checks, not a claim that every historical upstream path is already ported.

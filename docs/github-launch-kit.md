@@ -100,6 +100,10 @@ This release establishes the repository as an OpenCode adaptation of the origina
 - `/ship`
 - `/debug`
 - `/document-release`
+- `/office-hours`
+- `/retro`
+- `/setup-browser-cookies`
+- `/gstack-upgrade`
 
 ### Validation scope
 
@@ -121,8 +125,19 @@ OPENCODE_SMOKE=1 bun test test/opencode-plan-ceo-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-eng-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-plan-design-review-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-review-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-review-fix-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-qa-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-qa-regression-smoke.test.ts
 OPENCODE_SMOKE=1 bun test test/opencode-ship-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-commit-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-push-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-ship-pr-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-design-review-fix-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-office-hours-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-retro-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-setup-browser-cookies-smoke.test.ts
+OPENCODE_SMOKE=1 bun test test/opencode-gstack-upgrade-smoke.test.ts
 ```
 
 ### Notes for users

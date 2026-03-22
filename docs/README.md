@@ -17,6 +17,8 @@ This directory holds supporting documentation for the OpenCode version of gstack
 
 - [Open Source Release Checklist](open-source-release-checklist.md)
 - [GitHub Launch Kit](github-launch-kit.md)
+- [Release Copy Pack](release-copy-pack.md)
+- [Upstream Parity Status](upstream-parity-status.md)
 
 ## Historical Assets
 

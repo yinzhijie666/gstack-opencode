@@ -36,15 +36,16 @@ Target only these files in v1 unless the user narrows scope further:
 
 - `README.md`
 - `README-zh-CN.md`
+- `AGENTS.md`
 - `ARCHITECTURE.md`
 - `CONTRIBUTING.md`
+- `TODOS.md`
 - `docs/**/*.md`
 
 Out of scope in v1:
 
 - `CHANGELOG.md`
 - `VERSION`
-- `TODOS.md`
 - `README.claude.backup.md`
 
 ## Base Branch Detection
@@ -122,5 +123,5 @@ If the request provides an explicit summary output path, use that exact path.
 - Read before editing
 - Keep updates factual and minimal
 - Skip ambiguity instead of inventing content
-- Do not touch `CHANGELOG.md`, `VERSION`, `TODOS.md`, or `README.claude.backup.md` in this v1 workflow
+- Do not touch `CHANGELOG.md`, `VERSION`, or `README.claude.backup.md` in this workflow unless the user explicitly overrides scope
 - Do not commit, stage, or push changes
