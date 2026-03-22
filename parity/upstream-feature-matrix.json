@@ -1,0 +1,116 @@
+{
+  "workflows": [
+    {
+      "name": "browse",
+      "upstreamPath": "browse/",
+      "localCommand": ".opencode/commands/browse.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "plan-ceo-review",
+      "upstreamPath": "plan-ceo-review/",
+      "localCommand": ".opencode/commands/plan-ceo-review.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "plan-eng-review",
+      "upstreamPath": "plan-eng-review/",
+      "localCommand": ".opencode/commands/plan-eng-review.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "plan-design-review",
+      "upstreamPath": "plan-design-review/",
+      "localCommand": ".opencode/commands/plan-design-review.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "design-consultation",
+      "upstreamPath": "design-consultation/",
+      "localCommand": ".opencode/commands/design-consultation.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "review",
+      "upstreamPath": "review/",
+      "localCommand": ".opencode/commands/review.md",
+      "classification": "adapt-opencode",
+      "status": "shipped-v1"
+    },
+    {
+      "name": "qa",
+      "upstreamPath": "qa/",
+      "localCommand": ".opencode/commands/qa.md",
+      "classification": "adapt-opencode",
+      "status": "shipped-v1"
+    },
+    {
+      "name": "qa-only",
+      "upstreamPath": "qa-only/",
+      "localCommand": ".opencode/commands/qa-only.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "design-review",
+      "upstreamPath": "design-review/",
+      "localCommand": ".opencode/commands/design-review.md",
+      "classification": "adapt-opencode",
+      "status": "shipped-v1"
+    },
+    {
+      "name": "ship",
+      "upstreamPath": "ship/",
+      "localCommand": ".opencode/commands/ship.md",
+      "classification": "adapt-opencode",
+      "status": "shipped-v1"
+    },
+    {
+      "name": "debug",
+      "upstreamPath": "debug/",
+      "localCommand": ".opencode/commands/debug.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "document-release",
+      "upstreamPath": "document-release/",
+      "localCommand": ".opencode/commands/document-release.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "office-hours",
+      "upstreamPath": "office-hours/",
+      "localCommand": ".opencode/commands/office-hours.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "retro",
+      "upstreamPath": "retro/",
+      "localCommand": ".opencode/commands/retro.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "setup-browser-cookies",
+      "upstreamPath": "setup-browser-cookies/",
+      "localCommand": ".opencode/commands/setup-browser-cookies.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    },
+    {
+      "name": "gstack-upgrade",
+      "upstreamPath": "gstack-upgrade/",
+      "localCommand": ".opencode/commands/gstack-upgrade.md",
+      "classification": "adapt-opencode",
+      "status": "shipped"
+    }
+  ]
+}
