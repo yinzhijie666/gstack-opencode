@@ -4,6 +4,7 @@
   "description": "OpenCode adaptation of gstack with native OpenCode workflows and a fast persistent browser runtime.",
   "license": "MIT",
   "type": "module",
+  "main": ".opencode/noop.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/VanGoghBuilder/gstack-opencode"
