@@ -13,7 +13,7 @@
 | **Pages visited** | {COUNT} |
 | **Screenshots** | {COUNT} |
 | **Framework** | {DETECTED or "Unknown"} |
-| **Index** | [All QA runs](./index.md) |
+| **Index** | [All QA runs](./index.md) <!-- 模板变量：实际使用时替换为 QA 报告索引页路径 --> |
 
 ## Health Score: {SCORE}/100
 

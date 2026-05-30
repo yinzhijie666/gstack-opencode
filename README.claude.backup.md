@@ -1,3 +1,5 @@
+> **归档声明**: 本文档为 gstack 原始仓库的历史归档（Claude Code 版本）。部分链接（如 docs/skills.md）指向原始仓库结构，在当前 OpenCode 改造版中可能不存在。详见 AGENTS.md 中的归档说明。
+
 # gstack
 
 Hi, I'm [Garry Tan](https://x.com/garrytan). I'm President & CEO of [Y Combinator](https://www.ycombinator.com/), where I've worked with thousands of startups including Coinbase, Instacart, and Rippling when the founders were just one or two people in a garage — companies now worth tens of billions of dollars. Before YC, I designed the Palantir logo and was one of the first eng manager/PM/designers there. I cofounded Posterous, a blog platform we sold to Twitter. I built Bookface, YC's internal social network, back in 2013. I've been building products as a designer, PM, and eng manager for a long time.
