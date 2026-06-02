@@ -32,6 +32,7 @@ By default this workflow is report-first. If the request explicitly says to fix 
 - If review cannot proceed, still write a short report explaining why
 - If the request says `do not modify code` or `report only`, stay report-only
 - If the request explicitly asks for fixes, apply directly evidenced, low-risk local fixes for the highest-confidence findings
+- **v2 Enhancement:** Even in report-only mode, automatically generate a `review-fixes.patch` file with suggested fixes for the top 3 highest-confidence issues. Do not apply the patch unless explicitly requested, but make it available for the user to review.
 
 ## Base Branch Detection
 

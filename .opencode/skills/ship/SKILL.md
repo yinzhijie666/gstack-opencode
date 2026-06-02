@@ -124,7 +124,20 @@ Use one of these statuses in the report:
 
 Write the report file even for blocked outcomes. Never exit early without a written report.
 
-### 5. Optional Shipping Actions
+### 5. Auto-Invoke Document Release (v2 Enhancement)
+
+When the Ship Decision is `READY_LOCAL` and the user has not explicitly disabled it:
+
+- automatically invoke the `document-release` skill to update project docs with factual changes from this branch
+- pass the current branch name and base branch as context
+- append the document-release summary path to the ship report under `Auto-Release Summary`
+- if document-release produces no changes, note "No doc updates required"
+
+This ensures every shipping branch has up-to-date documentation without manual intervention.
+
+**To skip:** User can include `--skip-release` in the request.
+
+### 6. Optional Shipping Actions
 
 Only enter this path when the user explicitly asks for the action.
 
@@ -139,3 +152,4 @@ Only enter this path when the user explicitly asks for the action.
 - Do not fetch, merge, commit, push, or open PRs unless the user explicitly asks for that action
 - Do not modify source code, docs, or changelogs unless the user explicitly requests a shipping step that requires it
 - Defer versioning and changelog work unless the user explicitly requests them
+- **Auto document-release is the default**; only skip when `--skip-release` is present

@@ -87,6 +87,17 @@ $B snapshot -a -o .gstack/design-reports/screenshots/mobile.png
 
 If the mobile capture step fails, continue with the annotated screenshot and say that mobile capture was not completed.
 
+**v2 Enhancement:** After the basic sequence, perform an interactive element audit:
+
+```bash
+$B interactive-elements -o .gstack/design-reports/screenshots/interactive-map.png
+```
+
+This captures all buttons, links, and form elements with bounding boxes to identify:
+- Missing or invisible click targets
+- Overlapping elements
+- Unlabeled interactive components
+
 ## Optional Fix Loop
 
 Only enter this path when the user explicitly asks for fixes.

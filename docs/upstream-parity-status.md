@@ -1,6 +1,12 @@
 # Upstream Parity Status
 
-This document tracks the current OpenCode adaptation against the upstream project at `https://github.com/garrytan/gstack`.
+> **Fork Identity**: This is `yinzhijie666/gstack-opencode`, a personal fork of `garrytan/gstack`.
+> 
+> - **Origin**: `https://github.com/garrytan/gstack` (upstream)
+> - **Fork**: `https://github.com/yinzhijie666/gstack-opencode` (this repo)
+> - **Previous fork path**: `VanGoghBuilder/gstack-opencode` → `yinzhijie666/gstack-opencode`
+
+This document tracks the current OpenCode adaptation against the upstream project.
 
 ## Target
 

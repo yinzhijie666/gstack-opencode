@@ -55,6 +55,7 @@ Write outputs here:
 - if the request explicitly asks for fixes, use a bounded local fix loop and re-verify the result
 - if the request gives exact report or baseline output paths, use those exact paths instead of generating alternate filenames
 - create screenshot artifacts under `.gstack/qa-reports/screenshots/`
+- **v2 Enhancement:** every reported issue must include a screenshot evidence path. If an issue is text-only (e.g., console error), capture the relevant console output as a text artifact under `.gstack/qa-reports/screenshots/`
 - in quick mode, keep the report bounded to 2-4 high-confidence issues
 
 ## Modes

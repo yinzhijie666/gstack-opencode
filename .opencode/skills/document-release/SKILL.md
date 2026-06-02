@@ -91,6 +91,7 @@ Use `.gstack/document-release/document-release-{slug}.md` unless the user provid
 ### 3. Gather Evidence
 
 - read `git diff <base> --name-only` and `git diff <base> --stat` when a base exists
+- **v2 Enhancement:** also read `git diff <base> -- '*.md'` to identify which docs have actual content changes vs. only formatting changes. Prioritize files with content changes.
 - read the changed code or config files needed to support factual edits
 - read each selected Markdown file before editing it
 

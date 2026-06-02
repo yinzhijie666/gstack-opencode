@@ -7,11 +7,11 @@
   "main": ".opencode/noop.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VanGoghBuilder/gstack-opencode"
+    "url": "https://github.com/yinzhijie666/gstack-opencode"
   },
-  "homepage": "https://github.com/VanGoghBuilder/gstack-opencode",
+  "homepage": "https://github.com/yinzhijie666/gstack-opencode",
   "bugs": {
-    "url": "https://github.com/VanGoghBuilder/gstack-opencode/issues"
+    "url": "https://github.com/yinzhijie666/gstack-opencode/issues"
   },
   "bin": {
     "browse": "./browse/dist/browse"
